@@ -26,7 +26,6 @@ namespace SEALServer.Controllers
         }
 
         [HttpPost]
-        [Route ("debugtest")]
         public SEALTransport Post([FromBody] SEALTransport content)
         {
             EncryptionParameters parms = new EncryptionParameters();
@@ -64,29 +63,6 @@ namespace SEALServer.Controllers
             }
             else
                 return new SEALTransport();
-        }
-
-        [HttpPost]
-        public FHEParams Post([FromBody] FHEParams fHEParams)
-        {
-
-            //FHEParams fHEParams = new FHEParams();
-
-            using EncryptionParameters parms = new EncryptionParameters(SchemeType.BFV);
-            ulong polyModulusDegree = 4096;
-            parms.PolyModulusDegree = polyModulusDegree;
-            parms.CoeffModulus = CoeffModulus.BFVDefault(polyModulusDegree);
-            parms.PlainModulus = new Modulus(1024);
-            using SEALContext context = new SEALContext(parms);
-            using Evaluator evaluator = new Evaluator(context);
-
-            if (fHEParams.operation == "add")
-            {
-                evaluator.Add(fHEParams.param1, fHEParams.param2,fHEParams.result);
-                return fHEParams;
-            }
-            else
-                return new FHEParams();
         }
     }
 }
